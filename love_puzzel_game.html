@@ -131,12 +131,11 @@
         .popup button:hover {
             background-color: #f5dfe7f3;
         }
-
+        
         .tile.touched {
-  opacity: 0.6;
-  border: 2px dashed #ec407a;
-}
-
+            opacity: 0.6;
+            border: 2px dashed #ec407a;
+        }
     </style>
 </head>
 
@@ -165,117 +164,141 @@
     </div>
 
     <script>
-  const puzzle = document.getElementById("puzzle");
-  const referenceImage = document.getElementById("referenceImage");
-  const popup = document.getElementById("popup");
+        const puzzle = document.getElementById("puzzle");
+        const referenceImage = document.getElementById("referenceImage");
+        const popup = document.getElementById("popup");
 
-  const gridSize = 4;
-  let tiles = [];
-  let currentImage = "";
-  let selectedTile = null;
+        const gridSize = 4;
+        let tiles = [];
+        let currentImage = "";
+        let draggedIndex = null;
 
-  const images = [
-    "asset/Love_Puzzle/Puzzle_1.JPG",
-    "asset/Love_Puzzle/Puzzle_2.JPG",
-    "asset/Love_Puzzle/Puzzle_3.JPG"
-  ];
+        const images = [
+            "asset/Love_Puzzle/Puzzle_1.JPG",
+            "asset/Love_Puzzle/Puzzle_2.JPG",
+            "asset/Love_Puzzle/Puzzle_3.JPG"
+        ];
 
-  function createTiles(imageURL) {
-    tiles = [];
-    for (let i = 0; i < gridSize * gridSize; i++) {
-      const tile = document.createElement("div");
-      tile.className = "tile";
-      tile.dataset.index = i;
+        function createTiles(imageURL) {
+            tiles = [];
+            for (let i = 0; i < gridSize * gridSize; i++) {
+                const tile = document.createElement("div");
+                tile.className = "tile";
+                tile.dataset.index = i;
 
-      const x = (i % gridSize) * 100;
-      const y = Math.floor(i / gridSize) * 100;
-      tile.style.backgroundImage = `url('${imageURL}')`;
-      tile.style.backgroundPosition = `-${x}px -${y}px`;
+                const x = (i % gridSize) * 100;
+                const y = Math.floor(i / gridSize) * 100;
+                tile.style.backgroundImage = `url('${imageURL}')`;
+                tile.style.backgroundPosition = `-${x}px -${y}px`;
 
-      tile.addEventListener("click", () => handleTileClick(tile));
-      tiles.push(tile);
-    }
-    displayTiles();
-  }
+                tile.setAttribute("draggable", "true");
 
-  function displayTiles() {
-    puzzle.innerHTML = "";
-    tiles.forEach((tile) => puzzle.appendChild(tile));
-  }
+                // Drag events for desktop
+                tile.addEventListener("dragstart", () => {
+                    draggedIndex = tiles.indexOf(tile);
+                });
 
-  function handleTileClick(tile) {
-    if (!selectedTile) {
-      selectedTile = tile;
-      tile.classList.add("touched");
-    } else if (selectedTile === tile) {
-      selectedTile.classList.remove("touched");
-      selectedTile = null;
-    } else {
-      const fromIndex = tiles.indexOf(selectedTile);
-      const toIndex = tiles.indexOf(tile);
+                tile.addEventListener("dragover", (e) => e.preventDefault());
 
-      [tiles[fromIndex], tiles[toIndex]] = [tiles[toIndex], tiles[fromIndex]];
+                tile.addEventListener("drop", () => {
+                    const droppedIndex = tiles.indexOf(tile);
+                    swapTiles(draggedIndex, droppedIndex);
+                });
 
-      selectedTile.classList.remove("touched");
-      selectedTile = null;
-      displayTiles();
-      checkWin();
-    }
-  }
+                // Touch events for mobile
+                tile.addEventListener("touchstart", (e) => {
+                    draggedIndex = tiles.indexOf(tile);
+                    e.target.classList.add("touched");
+                }, {
+                    passive: true
+                });
 
-  function shuffle() {
-    popup.style.display = "none";
-    selectedTile = null;
-    for (let i = tiles.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
-    }
-    displayTiles();
-  }
+                tile.addEventListener("touchend", (e) => {
+                    const touchedTile = document.querySelector(".touched");
+                    const droppedIndex = tiles.indexOf(tile);
 
-  function loadAnotherImage() {
-    let nextImage;
-    do {
-      nextImage = images[Math.floor(Math.random() * images.length)];
-    } while (nextImage === currentImage);
+                    if (draggedIndex !== null && droppedIndex !== null && draggedIndex !== droppedIndex) {
+                        swapTiles(draggedIndex, droppedIndex);
+                    }
 
-    currentImage = nextImage;
-    referenceImage.src = currentImage;
-    popup.style.display = "none";
-    createTiles(currentImage);
-    shuffle();
-  }
+                    if (touchedTile) {
+                        touchedTile.classList.remove("touched");
+                    }
 
-  function checkWin() {
-    const isCorrect = tiles.every((tile, index) => tile.dataset.index == index);
-    if (isCorrect) {
-      popup.style.display = "block";
-      celebrate();
-    }
-  }
+                    draggedIndex = null;
+                });
 
-  function closePopup() {
-    popup.style.display = "none";
-    window.location.href = "menu.html";
-  }
+                tiles.push(tile);
+            }
+            displayTiles();
+        }
 
-  function celebrate() {
-    confetti({
-      particleCount: 200,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ["#e91e63", "#f8bbd0", "#f06292"],
-    });
-  }
+        function displayTiles() {
+            puzzle.innerHTML = "";
+            tiles.forEach((tile) => puzzle.appendChild(tile));
+        }
 
-  window.onload = () => {
-    currentImage = images[0];
-    referenceImage.src = currentImage;
-    createTiles(currentImage);
-    shuffle();
-  };
-</script>
+        function swapTiles(fromIndex, toIndex) {
+            if (fromIndex === null || toIndex === null || fromIndex === toIndex) return;
 
+            [tiles[fromIndex], tiles[toIndex]] = [tiles[toIndex], tiles[fromIndex]];
+            displayTiles();
+            checkWin();
+        }
+
+        function shuffle() {
+            popup.style.display = "none";
+            for (let i = tiles.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+            }
+            displayTiles();
+        }
+
+        function loadAnotherImage() {
+            let nextImage;
+            do {
+                nextImage = images[Math.floor(Math.random() * images.length)];
+            } while (nextImage === currentImage);
+
+            currentImage = nextImage;
+            referenceImage.src = currentImage;
+            popup.style.display = "none";
+            createTiles(currentImage);
+            shuffle();
+        }
+
+        function checkWin() {
+            const isCorrect = tiles.every((tile, index) => tile.dataset.index == index);
+            if (isCorrect) {
+                popup.style.display = "block";
+                celebrate();
+            }
+        }
+
+        function closePopup() {
+            popup.style.display = "none";
+            window.location.href = "menu.html";
+        }
+
+        function celebrate() {
+            confetti({
+                particleCount: 200,
+                spread: 70,
+                origin: {
+                    y: 0.6
+                },
+                colors: ["#e91e63", "#f8bbd0", "#f06292"],
+            });
+        }
+
+        window.onload = () => {
+            currentImage = images[0];
+            referenceImage.src = currentImage;
+            createTiles(currentImage);
+            shuffle();
+        };
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </body>
