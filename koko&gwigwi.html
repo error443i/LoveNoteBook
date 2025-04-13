@@ -129,11 +129,11 @@
         <div class="threeBtn">
             <div class="previous_button">
                 <a href="#" onclick="goBack()"><img src="asset/previous.png" alt=""></a>
-                <a href="#" id="loveTriggerBtn"><img src="asset/heart_red_transparent.png" alt=""></a>
+                <a href="#" onclick="togglePlay()" id="loveTriggerBtn"><img src="asset/heart_red_transparent.png" alt=""></a>
                 <a href="menu.html"><img src="asset/HomeLogo.png" alt=""></a>
             </div>
         </div>
-        <audio src="asset/wave to earth - bad.mp3" type="audio/mp3" id="bgMusic" loop autoplay></audio>
+        <audio src="asset/wave to earth - bad.mp3" type="audio/mp3" id="bgMusic" loop></audio>
     </div>
 </body>
 <script>
@@ -175,7 +175,15 @@
     // Adjust for audio volume
 
     const audio = document.getElementById("bgMusic");
-    audio.volume = 0.4;
+    audio.volume = 0.7;
+
+    function togglePlay() {
+        if (audio.paused) {
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    }
 </script>
 
 </html>
