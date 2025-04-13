@@ -67,8 +67,10 @@
             transition: opacity 0.2s;
         }
         
-        .tile:active {
-            opacity: 0.7;
+        .tile:active,
+        .tile.touched {
+            opacity: 0.6;
+            border: 2px dashed #ec407a;
         }
         
         button {
@@ -93,11 +95,9 @@
             color: green;
             display: none;
         }
-        /* Popup Styles */
         
         .popup {
             display: none;
-            /* Initially hidden */
             position: fixed;
             top: 50%;
             left: 50%;
@@ -137,28 +137,22 @@
 <body>
     <h2 style="margin-top: -4px">
         Our Love Puzzle Game
-        <span class="heart_red"><i class="fa-solid fa-heart" style="color: #f76e6e"></i
-      ></span>
+        <span class="heart_red"><i class="fa-solid fa-heart" style="color: #f76e6e"></i></span>
     </h2>
 
     <div class="wrapper">
-        <!-- Left: Reference Image -->
         <div class="correct-image">
             <img id="referenceImage" src="asset/Love_Puzzle/nov_copy.JPG" alt="Correct Image" />
             <p>Correct Image</p>
         </div>
 
-        <!-- Right: Puzzle Area -->
         <div>
             <div class="puzzle-container" id="puzzle"></div>
-            <button onclick="shuffle()">
-          <i class="fa-solid fa-shuffle fa-flip"></i>
-        </button>
+            <button onclick="shuffle()"><i class="fa-solid fa-shuffle fa-flip"></i></button>
             <button onclick="loadAnotherImage()">Swap Photo</button>
         </div>
     </div>
 
-    <!-- Popup Modal -->
     <div id="popup" class="popup">
         <h2>🎉 Congratulations! You solved it! 🎉</h2>
         <button onclick="closePopup()">Close</button>
@@ -177,7 +171,7 @@
         const images = [
             "asset/Love_Puzzle/Puzzle_1.JPG",
             "asset/Love_Puzzle/Puzzle_2.JPG",
-            "asset/Love_Puzzle/Puzzle_3.JPG",
+            "asset/Love_Puzzle/Puzzle_3.JPG"
         ];
 
         function createTiles(imageURL) {
@@ -193,16 +187,40 @@
                 tile.style.backgroundPosition = `-${x}px -${y}px`;
 
                 tile.setAttribute("draggable", "true");
-                tile.addEventListener("dragstart", (e) => {
+
+                // Drag events for desktop
+                tile.addEventListener("dragstart", () => {
                     draggedIndex = tiles.indexOf(tile);
                 });
 
                 tile.addEventListener("dragover", (e) => e.preventDefault());
 
-                tile.addEventListener("drop", (e) => {
-                    e.preventDefault();
+                tile.addEventListener("drop", () => {
                     const droppedIndex = tiles.indexOf(tile);
                     swapTiles(draggedIndex, droppedIndex);
+                });
+
+                // Touch events for mobile
+                tile.addEventListener("touchstart", (e) => {
+                    draggedIndex = tiles.indexOf(tile);
+                    e.target.classList.add("touched");
+                }, {
+                    passive: true
+                });
+
+                tile.addEventListener("touchend", (e) => {
+                    const touchedTile = document.querySelector(".touched");
+                    const droppedIndex = tiles.indexOf(tile);
+
+                    if (draggedIndex !== null && droppedIndex !== null && draggedIndex !== droppedIndex) {
+                        swapTiles(draggedIndex, droppedIndex);
+                    }
+
+                    if (touchedTile) {
+                        touchedTile.classList.remove("touched");
+                    }
+
+                    draggedIndex = null;
                 });
 
                 tiles.push(tile);
@@ -216,8 +234,7 @@
         }
 
         function swapTiles(fromIndex, toIndex) {
-            if (fromIndex === null || toIndex === null || fromIndex === toIndex)
-                return;
+            if (fromIndex === null || toIndex === null || fromIndex === toIndex) return;
 
             [tiles[fromIndex], tiles[toIndex]] = [tiles[toIndex], tiles[fromIndex]];
             displayTiles();
@@ -225,7 +242,7 @@
         }
 
         function shuffle() {
-            popup.style.display = "none"; // Hide popup on shuffle
+            popup.style.display = "none";
             for (let i = tiles.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
@@ -241,33 +258,23 @@
 
             currentImage = nextImage;
             referenceImage.src = currentImage;
-            popup.style.display = "none"; // Hide popup on new image load
+            popup.style.display = "none";
             createTiles(currentImage);
             shuffle();
         }
 
         function checkWin() {
-            const isCorrect = tiles.every(
-                (tile, index) => tile.dataset.index == index
-            );
+            const isCorrect = tiles.every((tile, index) => tile.dataset.index == index);
             if (isCorrect) {
-                popup.style.display = "block"; // Show popup
-                celebrate(); // 🎉 Confetti added
+                popup.style.display = "block";
+                celebrate();
             }
         }
 
         function closePopup() {
-            popup.style.display = "none"; // Close the popup
+            popup.style.display = "none";
             window.location.href = "menu.html";
         }
-
-        // Initial load
-        window.onload = () => {
-            currentImage = images[0];
-            referenceImage.src = currentImage;
-            createTiles(currentImage);
-            shuffle();
-        };
 
         function celebrate() {
             confetti({
@@ -279,9 +286,15 @@
                 colors: ["#e91e63", "#f8bbd0", "#f06292"],
             });
         }
+
+        window.onload = () => {
+            currentImage = images[0];
+            referenceImage.src = currentImage;
+            createTiles(currentImage);
+            shuffle();
+        };
     </script>
 
-    <!-- Confetti library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </body>
 
