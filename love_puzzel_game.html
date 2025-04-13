@@ -171,7 +171,7 @@
         const gridSize = 4;
         let tiles = [];
         let currentImage = "";
-        let draggedIndex = null;
+        let selectedTile = null;
 
         const images = [
             "asset/Love_Puzzle/Puzzle_1.JPG",
@@ -191,43 +191,7 @@
                 tile.style.backgroundImage = `url('${imageURL}')`;
                 tile.style.backgroundPosition = `-${x}px -${y}px`;
 
-                tile.setAttribute("draggable", "true");
-
-                // Drag events for desktop
-                tile.addEventListener("dragstart", () => {
-                    draggedIndex = tiles.indexOf(tile);
-                });
-
-                tile.addEventListener("dragover", (e) => e.preventDefault());
-
-                tile.addEventListener("drop", () => {
-                    const droppedIndex = tiles.indexOf(tile);
-                    swapTiles(draggedIndex, droppedIndex);
-                });
-
-                // Touch events for mobile
-                tile.addEventListener("touchstart", (e) => {
-                    draggedIndex = tiles.indexOf(tile);
-                    e.target.classList.add("touched");
-                }, {
-                    passive: true
-                });
-
-                tile.addEventListener("touchend", (e) => {
-                    const touchedTile = document.querySelector(".touched");
-                    const droppedIndex = tiles.indexOf(tile);
-
-                    if (draggedIndex !== null && droppedIndex !== null && draggedIndex !== droppedIndex) {
-                        swapTiles(draggedIndex, droppedIndex);
-                    }
-
-                    if (touchedTile) {
-                        touchedTile.classList.remove("touched");
-                    }
-
-                    draggedIndex = null;
-                });
-
+                tile.addEventListener("click", () => handleTileClick(tile));
                 tiles.push(tile);
             }
             displayTiles();
@@ -238,16 +202,29 @@
             tiles.forEach((tile) => puzzle.appendChild(tile));
         }
 
-        function swapTiles(fromIndex, toIndex) {
-            if (fromIndex === null || toIndex === null || fromIndex === toIndex) return;
+        function handleTileClick(tile) {
+            if (!selectedTile) {
+                selectedTile = tile;
+                tile.classList.add("touched");
+            } else if (selectedTile === tile) {
+                selectedTile.classList.remove("touched");
+                selectedTile = null;
+            } else {
+                const fromIndex = tiles.indexOf(selectedTile);
+                const toIndex = tiles.indexOf(tile);
 
-            [tiles[fromIndex], tiles[toIndex]] = [tiles[toIndex], tiles[fromIndex]];
-            displayTiles();
-            checkWin();
+                [tiles[fromIndex], tiles[toIndex]] = [tiles[toIndex], tiles[fromIndex]];
+
+                selectedTile.classList.remove("touched");
+                selectedTile = null;
+                displayTiles();
+                checkWin();
+            }
         }
 
         function shuffle() {
             popup.style.display = "none";
+            selectedTile = null;
             for (let i = tiles.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
@@ -299,6 +276,7 @@
             shuffle();
         };
     </script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </body>
