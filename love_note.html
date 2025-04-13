@@ -87,9 +87,9 @@
 <body>
     <div class="container">
         <div class="heart">
-            <span class="heart_red"><i class="fa-solid fa-heart" style="color: #f69d9d;"></i></span>
-            <span class="heart_red"><i class="fa-solid fa-heart" style="color: #f69d9d;"></i></span>
-            <span class="heart_red"><i class="fa-solid fa-heart" style="color: #f69d9d;"></i></span>
+            <span onclick="togglePlay()" class="heart_red"><i class="fa-solid fa-heart" style="color: #f69d9d;"></i></span>
+            <span onclick="togglePlay()" class="heart_red"><i class="fa-solid fa-heart" style="color: #f69d9d;"></i></span>
+            <span onclick="togglePlay()" class="heart_red"><i class="fa-solid fa-heart" style="color: #f69d9d;"></i></span>
         </div>
 
 
@@ -114,12 +114,21 @@
             </div>
         </div>
         <a href="koko&gwigwi.html"><button class="btn_us">Ko Ko & Gwi Gwi</button></a>
-        <audio src="asset/D-Vision, Lu Hpring - Ah Mhat Ta Mae.mp3" type="audio/mp3" id="bgMusic" loop autoplay></audio>
+        <audio src="asset/D-Vision, Lu Hpring - Ah Mhat Ta Mae.mp3" type="audio/mp3" id="bgMusic" loop></audio>
     </div>
 </body>
 <script>
     const audio = document.getElementById("bgMusic")
-    audio.volume = 0.4;
+    audio.volume = 0.7;
+
+
+    function togglePlay() {
+        if (audio.paused) {
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    }
 </script>
 
 </html>
