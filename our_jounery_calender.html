@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- Google Font Link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet" />
+</head>
+<style>
+    body {
+        background: linear-gradient(to right, #ffe6e6, #f9e2db, #ffd1ff);
+        background-size: 400% 400%;
+        animation: romanticFlow 20s ease infinite;
+        color: #4a4a4a;
+        font-family: "Karla", sans-serif;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        margin: 0px 10%;
+        column-gap: 100px;
+    }
+    
+    .box {
+        margin-top: -10px;
+    }
+    
+    .photo-container {
+        flex: 1 1 calc(25% - 40px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        max-width: 160px;
+        max-height: 160px;
+        background-color: #f5e2c8;
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .photo-container img {
+        width: 140px;
+        height: 140px;
+        object-fit: cover;
+        /* margin-bottom: 8px; */
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+    
+    .span {
+        font-size: 15px;
+        margin-top: 5px;
+        font-weight: bold;
+    }
+    
+    .fullscreen-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    
+    .fullscreen-modal img {
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+    }
+    
+    .fullscreen-modal:active {
+        display: none;
+    }
+    
+    @media (max-width: 480px) {
+        body {
+            overflow: auto;
+        }
+    }
+</style>
+
+<body>
+    <p style="
+        text-align: center;
+        font-size: 20px;
+        margin-top: 5px;
+        font-weight: bold;
+      ">
+        Our Memories
+    </p>
+    <div class="box">
+        <div class="container">
+            <div class="photo-container">
+                <img src="asset/calender/jan.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Jan</span>
+            </div>
+
+            <div class="photo-container">
+                <img src="asset/calender/feb.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Feb</span>
+            </div>
+
+            <div class="photo-container">
+                <img src="asset/calender/march.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">March</span>
+            </div>
+
+            <div class="photo-container">
+                <img src="asset/calender/april.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">April</span>
+            </div>
+
+            <div class="photo-container">
+                <img src="asset/calender/may.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">May</span>
+            </div>
+
+            <div class="photo-container">
+                <img src="asset/calender/jun.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">June</span>
+            </div>
+
+            <div class="photo-container">
+                <img src="asset/calender/july.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">July</span>
+            </div>
+
+            <div class="photo-container">
+                <img src="asset/calender/august.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Aug</span>
+            </div>
+
+            <div class="photo-container">
+                <img src="asset/calender/sep.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Sept</span>
+            </div>
+
+            <div class="photo-container">
+                <img src="asset/calender/oct.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Oct</span>
+            </div>
+
+            <div class="photo-container">
+                <img src="asset/calender/nov.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Nov</span>
+            </div>
+
+            <div class="photo-container">
+                <img src="asset/calender/dec.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Dec</span>
+            </div>
+        </div>
+    </div>
+    <div class="fullscreen-modal" id="fullscreenModal" onclick="closeModal()">
+        <img id="modalImage" src="" alt="Full View" />
+    </div>
+</body>
+<script>
+    function viewFullScreen(img) {
+        const modal = document.getElementById("fullscreenModal");
+        const modalImage = document.getElementById("modalImage");
+        modalImage.src = img.src;
+        modal.style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("fullscreenModal").style.display = "none";
+    }
+</script>
+
+</html>

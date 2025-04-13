@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Picture Puzzle Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #fce4ec;
+            font-family: "Karla", sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 10px;
+        }
+        
+        h2 {
+            color: #3c0b1b;
+            margin-bottom: 20px;
+        }
+        
+        .wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .correct-image img {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            border: 2px solid #e91e63;
+            border-radius: 10px;
+        }
+        
+        .correct-image p {
+            margin-top: 8px;
+            font-weight: bold;
+            color: #3c0b1b;
+        }
+        
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            width: 90vw;
+            max-width: 400px;
+            aspect-ratio: 1 / 1;
+            border: 2px solid #e91e63;
+        }
+        
+        .tile {
+            background-size: 400px 400px;
+            background-repeat: no-repeat;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        
+        .tile:active {
+            opacity: 0.7;
+        }
+        
+        button {
+            margin: 20px 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #3c0b1b;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #ec407a;
+        }
+        
+        .message {
+            margin-top: 5px;
+            font-size: 20px;
+            font-weight: bold;
+            color: green;
+            display: none;
+        }
+        /* Popup Styles */
+        
+        .popup {
+            display: none;
+            /* Initially hidden */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            text-align: center;
+        }
+        
+        .popup h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #fce4ec;
+        }
+        
+        .popup button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #fff;
+            border: none;
+            color: black;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .popup button:hover {
+            background-color: #f5dfe7f3;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 style="margin-top: -4px">
+        Our Love Puzzle Game
+        <span class="heart_red"><i class="fa-solid fa-heart" style="color: #f76e6e"></i
+      ></span>
+    </h2>
+
+    <div class="wrapper">
+        <!-- Left: Reference Image -->
+        <div class="correct-image">
+            <img id="referenceImage" src="asset/Love_Puzzle/nov_copy.JPG" alt="Correct Image" />
+            <p>Correct Image</p>
+        </div>
+
+        <!-- Right: Puzzle Area -->
+        <div>
+            <div class="puzzle-container" id="puzzle"></div>
+            <button onclick="shuffle()">
+          <i class="fa-solid fa-shuffle fa-flip"></i>
+        </button>
+            <button onclick="loadAnotherImage()">Swap Photo</button>
+        </div>
+    </div>
+
+    <!-- Popup Modal -->
+    <div id="popup" class="popup">
+        <h2>🎉 Congratulations! You solved it! 🎉</h2>
+        <button onclick="closePopup()">Close</button>
+    </div>
+
+    <script>
+        const puzzle = document.getElementById("puzzle");
+        const referenceImage = document.getElementById("referenceImage");
+        const popup = document.getElementById("popup");
+
+        const gridSize = 4;
+        let tiles = [];
+        let currentImage = "";
+        let draggedIndex = null;
+
+        const images = [
+            "asset/Love_Puzzle/Puzzle_1.JPG",
+            "asset/Love_Puzzle/Puzzle_2.JPG",
+            "asset/Love_Puzzle/Puzzle_3.JPG",
+        ];
+
+        function createTiles(imageURL) {
+            tiles = [];
+            for (let i = 0; i < gridSize * gridSize; i++) {
+                const tile = document.createElement("div");
+                tile.className = "tile";
+                tile.dataset.index = i;
+
+                const x = (i % gridSize) * 100;
+                const y = Math.floor(i / gridSize) * 100;
+                tile.style.backgroundImage = `url('${imageURL}')`;
+                tile.style.backgroundPosition = `-${x}px -${y}px`;
+
+                tile.setAttribute("draggable", "true");
+                tile.addEventListener("dragstart", (e) => {
+                    draggedIndex = tiles.indexOf(tile);
+                });
+
+                tile.addEventListener("dragover", (e) => e.preventDefault());
+
+                tile.addEventListener("drop", (e) => {
+                    e.preventDefault();
+                    const droppedIndex = tiles.indexOf(tile);
+                    swapTiles(draggedIndex, droppedIndex);
+                });
+
+                tiles.push(tile);
+            }
+            displayTiles();
+        }
+
+        function displayTiles() {
+            puzzle.innerHTML = "";
+            tiles.forEach((tile) => puzzle.appendChild(tile));
+        }
+
+        function swapTiles(fromIndex, toIndex) {
+            if (fromIndex === null || toIndex === null || fromIndex === toIndex)
+                return;
+
+            [tiles[fromIndex], tiles[toIndex]] = [tiles[toIndex], tiles[fromIndex]];
+            displayTiles();
+            checkWin();
+        }
+
+        function shuffle() {
+            popup.style.display = "none"; // Hide popup on shuffle
+            for (let i = tiles.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+            }
+            displayTiles();
+        }
+
+        function loadAnotherImage() {
+            let nextImage;
+            do {
+                nextImage = images[Math.floor(Math.random() * images.length)];
+            } while (nextImage === currentImage);
+
+            currentImage = nextImage;
+            referenceImage.src = currentImage;
+            popup.style.display = "none"; // Hide popup on new image load
+            createTiles(currentImage);
+            shuffle();
+        }
+
+        function checkWin() {
+            const isCorrect = tiles.every(
+                (tile, index) => tile.dataset.index == index
+            );
+            if (isCorrect) {
+                popup.style.display = "block"; // Show popup
+                celebrate(); // 🎉 Confetti added
+            }
+        }
+
+        function closePopup() {
+            popup.style.display = "none"; // Close the popup
+            window.location.href = "menu.html";
+        }
+
+        // Initial load
+        window.onload = () => {
+            currentImage = images[0];
+            referenceImage.src = currentImage;
+            createTiles(currentImage);
+            shuffle();
+        };
+
+        function celebrate() {
+            confetti({
+                particleCount: 200,
+                spread: 70,
+                origin: {
+                    y: 0.6
+                },
+                colors: ["#e91e63", "#f8bbd0", "#f06292"],
+            });
+        }
+    </script>
+
+    <!-- Confetti library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Calenders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Google Font Link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
+    <!-- Google National Park Font Link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=National+Park:wght@200..800&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+        font-family: "National Park", sans-serif;
+        height: 90vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: top;
+        text-align: center;
+        /* overflow: hidden; */
+        background: linear-gradient(to right, #c2e9fb, #a1c4fd, #d4fc79);
+        background-size: 300% 300%;
+        animation: gradientBG 20s ease infinite;
+        color: #1a1a1a;
+    }
+    
+    @keyframes gradientBG {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    
+    .container h2 {
+        margin-bottom: 3px;
+    }
+    
+    .heart_red {
+        font-size: 40px;
+    }
+    
+    .heart_red i {
+        margin-bottom: 20px;
+    }
+    
+    .img_container {
+        width: 200px;
+        height: 200px;
+        align-items: center;
+        margin: 0 auto;
+    }
+    
+    .img_container img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+        border: 2px solid #d2b9b9;
+    }
+    
+    .since-container {
+        text-align: center;
+        font-family: 'Poppins', sans-serif;
+        color: #1a1a2e;
+        /* background: #1a1a2e; */
+        padding: 10px;
+        /* border-radius: 20px; */
+        width: fit-content;
+        margin: 30px auto;
+        /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.4); */
+    }
+    
+    .since-container h2 {
+        font-family: "Karla", sans-serif;
+        margin-top: -10px;
+        margin-bottom: 10px;
+    }
+    
+    #timer span {
+        font-size: 32px;
+        font-weight: 600;
+        margin: 0 10px;
+    }
+    
+    @media (max-width: 480px) {
+        #timer {
+            width: 300px;
+        }
+        #timer span {
+            font-size: 30px;
+        }
+        #middleDot {
+            display: none;
+        }
+    }
+    
+    .dot {
+        font-size: 32px;
+        font-weight: 600;
+        color: #d34b4bce;
+    }
+    
+    .h3 {
+        font-family: "Karla", sans-serif;
+        font-weight: 600;
+        font-style: normal;
+        margin-top: -30px;
+    }
+    
+    .previous_button {
+        text-align: center;
+        margin-top: -10px;
+    }
+    
+    .previous_button img {
+        width: 40px;
+        height: 40px;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h2>Our Love Journey</h2>
+        <h3>How Long Have We Been Together?</h3>
+        <span class="heart_red"><i class="fa-solid fa-heart" style="color: #f76e6e;"></i></span>
+        <div class="img_container">
+            <img src="asset/Been_Together.jpg" alt="">
+        </div>
+
+        <div class="since-container">
+            <h2>We’ve been together for:</h2>
+            <div id="timer">
+                <span id="days">0</span> Days
+                <span class="dot">:</span>
+                <span id="hours">0</span> Hours
+                <span class="dot" id="middleDot">:</span>
+                <span id="minutes">0</span> Minutes
+                <span class="dot">:</span>
+                <span id="seconds">0</span> Seconds
+            </div>
+        </div>
+        <h3 class="h3">We're been in love for</h3>
+        <h4 style="font-weight: 500 ;"><span class=""><i class="fa-solid fa-heart" style="color: #f76e6e;"></i></span> Love you 3000.. <span class=""><i class="fa-solid fa-heart" style="color: #f76e6e;"></i></span></h4>
+        <div class="previous_button">
+            <a href="menu.html"><img src="asset/previous.png" alt=""></a>
+            <a href="our_jounery_calender.html"><img src="asset/calender_logo.jpg" alt=""></a>
+        </div>
+
+
+    </div>
+</body>
+<script>
+    // Set your start date here (Year, Month - 1, Day)
+    const startDate = new Date(2024, 2, 25); // Jan 1, 2021
+
+    function updateTimer() {
+        const now = new Date();
+        const diff = now - startDate;
+
+        const seconds = Math.floor(diff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        const displayHours = hours % 24;
+        const displayMinutes = minutes % 60;
+        const displaySeconds = seconds % 60;
+
+        document.getElementById('days').textContent = days;
+        document.getElementById('hours').textContent = displayHours;
+        document.getElementById('minutes').textContent = displayMinutes;
+        document.getElementById('seconds').textContent = displaySeconds;
+    }
+
+    // Update every second
+    setInterval(updateTimer, 1000);
+    updateTimer(); // Initial call
+</script>
+
+</html>

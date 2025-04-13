@@ -1,0 +1,224 @@
+body {
+    background-color: bisque;
+    font-family: "National Park", sans-serif;
+}
+
+
+/* Basic container styling */
+
+.photo-container {
+    display: flex;
+    /* Flexbox layout for centering */
+    justify-content: center;
+    /* Center the divs horizontally */
+    align-items: center;
+    /* Center the divs vertically */
+    padding: 20px;
+    /* Padding around the container */
+    flex-wrap: wrap;
+    /* Allow divs to wrap to the next line if needed */
+}
+
+
+/* Styling for the photo divs */
+
+.photo {
+    width: 350px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    transform: translateY(-3%);
+    -webkit-transform: translateY(-3%);
+    -moz-transform: translateY(-3%);
+    -ms-transform: translateY(-3%);
+    -o-transform: translateY(-3%);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Responsive layout for screens smaller than 768px (tablets, mobile devices) */
+
+@media (max-width: 768px) {
+    .photo-container {
+        flex-direction: column;
+        /* Stack the divs vertically */
+        align-items: center;
+        /* Center the photo divs vertically */
+        gap: 10px;
+        /* Smaller gap between photo divs */
+    }
+    /* Only show the first photo div on small screens */
+    .photo:nth-child(1) {
+        display: none;
+        /* Hide the second photo div on small screens */
+    }
+}
+
+
+/* Extra small screens (less than 480px, mobile phones) */
+
+@media (max-width: 480px) {
+    .photo-container {
+        padding: 10px;
+        /* Reduce padding for very small screens */
+    }
+    .photo {
+        width: 100%
+    }
+}
+
+.passcode-input {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+}
+
+.pass-box {
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    text-decoration: none;
+    border: none;
+    width: 200px;
+    height: 30px;
+    background-color: #fff;
+}
+
+.button-container {
+    display: grid;
+    grid-area: "1 2 3" "4 5 6" "7 8 9" "1 1 1";
+    width: 300px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.row {
+    display: flex;
+    margin: 0px;
+}
+
+.digit-btn {
+    width: 60px;
+    height: 60px;
+    background-color: #f1f1f1;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    border: none;
+    border-radius: 50%;
+    margin: 7px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.digit-btn:hover {
+    background-color: #ddd;
+}
+
+.digit-btn:focus {
+    outline: none;
+}
+
+.digit-btn:active {
+    background-color: #bbb;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-container {
+    width: 90%;
+    height: 70vh;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: -20px;
+    justify-content: space-around;
+}
+
+.card {
+    width: 250px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    flex-wrap: wrap;
+    background-color: #336D82;
+    margin-top: 20px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    box-shadow: 2px 4px 4px 2px rgb(0 0 0 / 50%);
+}
+
+.card img {
+    width: 50%;
+    height: 50%;
+    object-fit: cover;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+}
+
+a {
+    text-decoration: none;
+    color: #210F37;
+    text-align: center;
+}
+
+.logout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logout a img {
+    width: 50px;
+    height: 50px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+}
+
+@media (max-width: 786px) {
+    .logout a img {
+        margin-top: 20px;
+    }
+}
