@@ -12,11 +12,15 @@
     <link href="https://fonts.googleapis.com/css2?family=National+Park:wght@200..800&display=swap" rel="stylesheet">
 
     <!-- Font Awesome Link -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU[...]" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body style="color: #210F37;background-color: #9ACBD0;box-sizing: border-box; font-family: National Park , sans-serif" ;>
+    <!-- Fixed exit button placed at top of page to avoid layout shifting -->
+    <div class="logout">
+        <a href="index.html" aria-label="Exit to home"><img src="asset/logout.png" alt="Exit"></a>
+    </div>
+
     <h1 style="text-align: center;">Menu Of Our Love</h1>
     <p style="text-align: center;font-weight: 600; "><span><i class="fa-solid fa-heart"></i></span> Together Forever <span><i class="fa-solid fa-heart"></i></span></p>
 
@@ -56,9 +60,8 @@
                 <a href="love_note.html"><img style="width: 30px; height: 30px; overflow: hidden; " src="asset/heart.png" alt=""></a>
             </div>
 
-            <div class="logout">
-                <a href="index.html"><img src="asset/logout.png" alt=""></a>
-            </div>
+            <!-- removed inline logout here to avoid layout issues; exit button is fixed at top -->
+
         </div>
 
     </div>
