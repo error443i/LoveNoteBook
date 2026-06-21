@@ -173,62 +173,62 @@
         <section class="container" aria-label="Monthly photos">
 
             <figure class="photo-container">
-                <img src="asset/calender/jan.JPG" alt="January calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <img src="asset/calender/jan.JPG" alt="January calendar photo" loading="lazy"/>
                 <figcaption class="month-label">Jan</figcaption>
             </figure>
 
             <figure class="photo-container">
-                <img src="asset/calender/feb.JPG" alt="February calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <img src="asset/calender/feb.JPG" alt="February calendar photo" loading="lazy"/>
                 <figcaption class="month-label">Feb</figcaption>
             </figure>
 
             <figure class="photo-container">
-                <img src="asset/calender/march.JPG" alt="March calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <img src="asset/calender/march.JPG" alt="March calendar photo" loading="lazy"/>
                 <figcaption class="month-label">March</figcaption>
             </figure>
 
             <figure class="photo-container">
-                <img src="asset/calender/april.JPG" alt="April calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <img src="asset/calender/april.JPG" alt="April calendar photo" loading="lazy"/>
                 <figcaption class="month-label">April</figcaption>
             </figure>
 
             <figure class="photo-container">
-                <img src="asset/calender/may.JPG" alt="May calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <img src="asset/calender/may.JPG" alt="May calendar photo" loading="lazy"/>
                 <figcaption class="month-label">May</figcaption>
             </figure>
 
             <figure class="photo-container">
-                <img src="asset/calender/jun.JPG" alt="June calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <img src="asset/calender/jun.JPG" alt="June calendar photo" loading="lazy"/>
                 <figcaption class="month-label">June</figcaption>
             </figure>
 
             <figure class="photo-container">
-                <img src="asset/calender/july.JPG" alt="July calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <img src="asset/calender/july.JPG" alt="July calendar photo" loading="lazy"/>
                 <figcaption class="month-label">July</figcaption>
             </figure>
 
             <figure class="photo-container">
-                <img src="asset/calender/august.JPG" alt="August calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <img src="asset/calender/august.JPG" alt="August calendar photo" loading="lazy"/>
                 <figcaption class="month-label">Aug</figcaption>
             </figure>
 
             <figure class="photo-container">
-                <img src="asset/calender/sep.JPG" alt="September calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <img src="asset/calender/sep.JPG" alt="September calendar photo" loading="lazy"/>
                 <figcaption class="month-label">Sept</figcaption>
             </figure>
 
             <figure class="photo-container">
-                <img src="asset/calender/oct.JPG" alt="October calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <img src="asset/calender/oct.JPG" alt="October calendar photo" loading="lazy"/>
                 <figcaption class="month-label">Oct</figcaption>
             </figure>
 
             <figure class="photo-container">
-                <img src="asset/calender/nov.JPG" alt="November calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <img src="asset/calender/nov.JPG" alt="November calendar photo" loading="lazy"/>
                 <figcaption class="month-label">Nov</figcaption>
             </figure>
 
             <figure class="photo-container">
-                <img src="asset/calender/dec.JPG" alt="December calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <img src="asset/calender/dec.JPG" alt="December calendar photo" loading="lazy"/>
                 <figcaption class="month-label">Dec</figcaption>
             </figure>
 
@@ -241,54 +241,7 @@
 
     </main>
 
-    <script>
-        const modal = document.getElementById('fullscreenModal');
-        const modalImage = document.getElementById('modalImage');
-        const modalClose = document.getElementById('modalClose');
-
-        function viewFullScreen(img){
-            // Set the image and show modal
-            modalImage.src = img.src;
-            modalImage.alt = img.alt || 'Full view';
-            modal.setAttribute('aria-hidden','false');
-            // trap focus on close button for simplicity
-            modalClose.focus();
-            // prevent background scrolling
-            document.documentElement.style.overflow = 'hidden';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal(){
-            modal.setAttribute('aria-hidden','true');
-            modalImage.src = '';
-            document.documentElement.style.overflow = '';
-            document.body.style.overflow = '';
-        }
-
-        // Close when clicking outside the image
-        modal.addEventListener('click', (e)=>{
-            if(e.target === modal || e.target === modalClose) closeModal();
-        });
-
-        // Close on escape key
-        window.addEventListener('keydown', (e)=>{
-            if(e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false'){
-                closeModal();
-            }
-        });
-
-        // Improve keyboard accessibility for images
-        document.querySelectorAll('.photo-container img').forEach((img)=>{
-            img.setAttribute('tabindex','0');
-            img.addEventListener('keydown',(e)=>{
-                if(e.key === 'Enter' || e.key === ' '){
-                    e.preventDefault();
-                    viewFullScreen(img);
-                }
-            });
-        });
-
-    </script>
+    <script src="script.js" defer></script>
 </body>
 
 </html>
