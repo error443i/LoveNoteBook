@@ -9,168 +9,280 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet" />
-</head>
-<style>
-    body {
-        background: linear-gradient(to right, #ffe6e6, #f9e2db, #ffd1ff);
-        background-size: 400% 400%;
-        animation: romanticFlow 20s ease infinite;
-        color: #4a4a4a;
-        font-family: "Karla", sans-serif;
-        box-sizing: border-box;
-        overflow: hidden;
-    }
-    
-    .container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-        margin: 0px 10%;
-        column-gap: 100px;
-    }
-    
-    .box {
-        margin-top: -10px;
-    }
-    
-    .photo-container {
-        flex: 1 1 calc(25% - 40px);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        max-width: 160px;
-        max-height: 160px;
-        background-color: #f5e2c8;
-        padding: 10px;
-        text-align: center;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-    }
-    
-    .photo-container img {
-        width: 140px;
-        height: 140px;
-        object-fit: cover;
-        /* margin-bottom: 8px; */
-        border-radius: 5px;
-        cursor: pointer;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-    }
-    
-    .span {
-        font-size: 15px;
-        margin-top: 5px;
-        font-weight: bold;
-    }
-    
-    .fullscreen-modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.9);
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-    }
-    
-    .fullscreen-modal img {
-        max-width: 90%;
-        max-height: 90%;
-        border-radius: 10px;
-        box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
-    }
-    
-    .fullscreen-modal:active {
-        display: none;
-    }
-    
-    @media (max-width: 480px) {
-        body {
-            overflow: auto;
+    <style>
+        :root{
+            --bg1: #ffe6e6;
+            --bg2: #f9e2db;
+            --bg3: #ffd1ff;
+            --card-bg: #f5e2c8;
+            --text: #4a4a4a;
         }
-    }
-</style>
+
+        html,body{
+            height:100%;
+            margin:0;
+            padding:0;
+        }
+
+        body {
+            background: linear-gradient(120deg, var(--bg1), var(--bg2), var(--bg3));
+            background-size: 400% 400%;
+            animation: romanticFlow 20s ease infinite;
+            color: var(--text);
+            font-family: "Karla", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            box-sizing: border-box;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            line-height:1.2;
+        }
+
+        @keyframes romanticFlow{
+            0%{background-position:0% 50%;}
+            50%{background-position:100% 50%;}
+            100%{background-position:0% 50%;}
+        }
+
+        .page {
+            max-width:1200px;
+            margin:18px auto;
+            padding:16px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: clamp(18px, 3.5vw, 26px);
+            margin:8px 0 18px;
+            font-weight:700;
+        }
+
+        /* Use a responsive CSS grid that automatically fits columns */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            align-items: start;
+            justify-items: center;
+            padding: 8px;
+        }
+
+        .photo-container {
+            width:100%;
+            max-width:220px;
+            background-color: var(--card-bg);
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+
+        .photo-container:focus-within,
+        .photo-container:hover{
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+        }
+
+        .photo-container img {
+            width:100%;
+            height:auto; /* preserve aspect ratio */
+            max-height:260px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            display:block;
+        }
+
+        .month-label {
+            display:block;
+            margin-top:10px;
+            font-size: clamp(13px, 2.2vw, 15px);
+            font-weight:700;
+            color:var(--text);
+        }
+
+        /* Fullscreen modal */
+        .fullscreen-modal {
+            display: none; /* toggled via JS */
+            position: fixed;
+            inset:0; /* top:0; right:0; bottom:0; left:0; */
+            background-color: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        .fullscreen-modal[aria-hidden="false"]{
+            display:flex;
+        }
+
+        .fullscreen-modal img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Close button */
+        .modal-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            border: none;
+            padding: 8px 10px;
+            border-radius: 6px;
+            backdrop-filter: blur(4px);
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        .visually-hidden{
+            position:absolute!important;
+            height:1px;width:1px;
+            overflow:hidden;
+            clip:rect(1px,1px,1px,1px);
+            white-space:nowrap;
+        }
+
+        /* small screens tweaks */
+        @media (max-width:420px){
+            .container{gap:12px}
+            .photo-container{padding:8px}
+            .photo-container img{max-height:200px}
+        }
+
+        @media (min-width:1200px){
+            .container{gap:18px}
+        }
+
+    </style>
+</head>
 
 <body>
-    <p style="
-        text-align: center;
-        font-size: 20px;
-        margin-top: 5px;
-        font-weight: bold;
-      ">
-        Our Memories
-    </p>
-    <div class="box">
-        <div class="container">
-            <div class="photo-container">
-                <img src="asset/calender/jan.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Jan</span>
-            </div>
+    <main class="page">
+        <h1>Our Memories</h1>
 
-            <div class="photo-container">
-                <img src="asset/calender/feb.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Feb</span>
-            </div>
+        <section class="container" aria-label="Monthly photos">
 
-            <div class="photo-container">
-                <img src="asset/calender/march.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">March</span>
-            </div>
+            <figure class="photo-container">
+                <img src="asset/calender/jan.JPG" alt="January calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <figcaption class="month-label">Jan</figcaption>
+            </figure>
 
-            <div class="photo-container">
-                <img src="asset/calender/april.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">April</span>
-            </div>
+            <figure class="photo-container">
+                <img src="asset/calender/feb.JPG" alt="February calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <figcaption class="month-label">Feb</figcaption>
+            </figure>
 
-            <div class="photo-container">
-                <img src="asset/calender/may.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">May</span>
-            </div>
+            <figure class="photo-container">
+                <img src="asset/calender/march.JPG" alt="March calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <figcaption class="month-label">March</figcaption>
+            </figure>
 
-            <div class="photo-container">
-                <img src="asset/calender/jun.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">June</span>
-            </div>
+            <figure class="photo-container">
+                <img src="asset/calender/april.JPG" alt="April calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <figcaption class="month-label">April</figcaption>
+            </figure>
 
-            <div class="photo-container">
-                <img src="asset/calender/july.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">July</span>
-            </div>
+            <figure class="photo-container">
+                <img src="asset/calender/may.JPG" alt="May calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <figcaption class="month-label">May</figcaption>
+            </figure>
 
-            <div class="photo-container">
-                <img src="asset/calender/august.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Aug</span>
-            </div>
+            <figure class="photo-container">
+                <img src="asset/calender/jun.JPG" alt="June calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <figcaption class="month-label">June</figcaption>
+            </figure>
 
-            <div class="photo-container">
-                <img src="asset/calender/sep.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Sept</span>
-            </div>
+            <figure class="photo-container">
+                <img src="asset/calender/july.JPG" alt="July calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <figcaption class="month-label">July</figcaption>
+            </figure>
 
-            <div class="photo-container">
-                <img src="asset/calender/oct.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Oct</span>
-            </div>
+            <figure class="photo-container">
+                <img src="asset/calender/august.JPG" alt="August calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <figcaption class="month-label">Aug</figcaption>
+            </figure>
 
-            <div class="photo-container">
-                <img src="asset/calender/nov.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Nov</span>
-            </div>
+            <figure class="photo-container">
+                <img src="asset/calender/sep.JPG" alt="September calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <figcaption class="month-label">Sept</figcaption>
+            </figure>
 
-            <div class="photo-container">
-                <img src="asset/calender/dec.JPG" alt="" onclick="viewFullScreen(this)" /><span class="span">Dec</span>
-            </div>
+            <figure class="photo-container">
+                <img src="asset/calender/oct.JPG" alt="October calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <figcaption class="month-label">Oct</figcaption>
+            </figure>
+
+            <figure class="photo-container">
+                <img src="asset/calender/nov.JPG" alt="November calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <figcaption class="month-label">Nov</figcaption>
+            </figure>
+
+            <figure class="photo-container">
+                <img src="asset/calender/dec.JPG" alt="December calendar photo" onclick="viewFullScreen(this)" loading="lazy"/>
+                <figcaption class="month-label">Dec</figcaption>
+            </figure>
+
+        </section>
+
+        <div class="fullscreen-modal" id="fullscreenModal" aria-hidden="true" role="dialog" aria-label="Image preview">
+            <button class="modal-close" id="modalClose" aria-label="Close preview">✕</button>
+            <img id="modalImage" src="" alt="Full view" />
         </div>
-    </div>
-    <div class="fullscreen-modal" id="fullscreenModal" onclick="closeModal()">
-        <img id="modalImage" src="" alt="Full View" />
-    </div>
-</body>
-<script>
-    function viewFullScreen(img) {
-        const modal = document.getElementById("fullscreenModal");
-        const modalImage = document.getElementById("modalImage");
-        modalImage.src = img.src;
-        modal.style.display = "flex";
-    }
 
-    function closeModal() {
-        document.getElementById("fullscreenModal").style.display = "none";
-    }
-</script>
+    </main>
+
+    <script>
+        const modal = document.getElementById('fullscreenModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalClose = document.getElementById('modalClose');
+
+        function viewFullScreen(img){
+            // Set the image and show modal
+            modalImage.src = img.src;
+            modalImage.alt = img.alt || 'Full view';
+            modal.setAttribute('aria-hidden','false');
+            // trap focus on close button for simplicity
+            modalClose.focus();
+            // prevent background scrolling
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(){
+            modal.setAttribute('aria-hidden','true');
+            modalImage.src = '';
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
+        }
+
+        // Close when clicking outside the image
+        modal.addEventListener('click', (e)=>{
+            if(e.target === modal || e.target === modalClose) closeModal();
+        });
+
+        // Close on escape key
+        window.addEventListener('keydown', (e)=>{
+            if(e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false'){
+                closeModal();
+            }
+        });
+
+        // Improve keyboard accessibility for images
+        document.querySelectorAll('.photo-container img').forEach((img)=>{
+            img.setAttribute('tabindex','0');
+            img.addEventListener('keydown',(e)=>{
+                if(e.key === 'Enter' || e.key === ' '){
+                    e.preventDefault();
+                    viewFullScreen(img);
+                }
+            });
+        });
+
+    </script>
+</body>
 
 </html>
