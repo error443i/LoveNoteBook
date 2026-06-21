@@ -55,10 +55,11 @@
             font-weight:700;
         }
 
-        /* Use a responsive CSS grid that automatically fits columns */
+        /* Fixed 4 columns on large screens to create an exact 4x3 layout (12 items total)
+           with responsive fallbacks for narrower viewports. */
         .container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            grid-template-columns: repeat(4, minmax(140px, 1fr)); /* 4 columns */
             gap: 16px;
             align-items: start;
             justify-items: center;
@@ -67,7 +68,7 @@
 
         .photo-container {
             width:100%;
-            max-width:220px;
+            max-width:260px;
             background-color: var(--card-bg);
             padding: 10px;
             text-align: center;
@@ -146,15 +147,20 @@
             white-space:nowrap;
         }
 
-        /* small screens tweaks */
-        @media (max-width:420px){
-            .container{gap:12px}
-            .photo-container{padding:8px}
-            .photo-container img{max-height:200px}
+        /* Responsive fallbacks: 3 / 2 / 1 columns */
+        @media (max-width:1024px){
+            .container{ grid-template-columns: repeat(3, 1fr); }
         }
 
-        @media (min-width:1200px){
-            .container{gap:18px}
+        @media (max-width:768px){
+            .container{ grid-template-columns: repeat(2, 1fr); }
+            .photo-container img{ max-height:220px }
+        }
+
+        @media (max-width:420px){
+            .container{ grid-template-columns: repeat(1, 1fr); gap:12px }
+            .photo-container{padding:8px}
+            .photo-container img{max-height:200px}
         }
 
     </style>
